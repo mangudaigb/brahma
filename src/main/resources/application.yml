@@ -1,0 +1,9 @@
+micronaut:
+  server:
+    port: 8080
+  application:
+    name: echo
+endpoints:
+  all:
+    enabled: true
+    sensitive: false
