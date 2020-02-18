@@ -20,7 +20,7 @@ public class EchoController {
         this.echoService = echoService;
     }
 
-    @Post(value = "/echo")
+    @Put(value = "/echo")
     @Produces(MediaType.APPLICATION_JSON)
     public EchoReply getResponseForEcho(@Body EchoRequest request) {
         return echoService.createResponse(request);
