@@ -6,6 +6,7 @@ import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.client.RxHttpClient;
+import io.micronaut.http.client.exceptions.HttpClientException;
 import io.reactivex.Flowable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ public class EchoService {
     private RxHttpClient httpClient;
     private static final Logger logger = LoggerFactory.getLogger(EchoService.class);
 
-    public EchoReply createResponse(EchoRequest request) {
+    public EchoReply createResponse(EchoRequest request, String url) {
         String serviceName = System.getProperty("name");
         logger.debug("System Name: " + serviceName);
 //        Integer depth = Integer.valueOf();
@@ -38,6 +39,7 @@ public class EchoService {
         er.setName(serviceName);
         er.setResponseTime(getDate());
         er.setMessage(request.getMessage());
+        er.setUrl(url);
 
         List<EchoReply> dependentReplyList = new ArrayList<>();
         for (Dependent dependent : request.getDependentList()) {
@@ -57,16 +59,20 @@ public class EchoService {
             req.setMessage(dependent.getMessage());
             req.setDependentList(dependent.getDependentList());
             HttpResponse<EchoReply> response = httpClient.toBlocking().exchange(
-                    HttpRequest.POST("/echo", req)
+                    HttpRequest.PUT("/echo", req)
                         .contentType(MediaType.APPLICATION_JSON),
                     EchoReply.class);
             EchoReply reply = response.getBody().get();
             return reply;
-        } catch (MalformedURLException ex) {
+        } catch (MalformedURLException | HttpClientException ex) {
             logger.error("Error connecting to service url: " + ex.getLocalizedMessage());
-            ex.printStackTrace();
+            EchoReply reply = new EchoReply();
+            reply.setUrl(dependent.getUrl());
+            reply.setMessage(ex.getLocalizedMessage());
+            reply.setName(dependent.getUrl());
+            reply.setResponseTime(getDate());
+            return reply;
         }
-        return null;
     }
 
     private String getDate() {

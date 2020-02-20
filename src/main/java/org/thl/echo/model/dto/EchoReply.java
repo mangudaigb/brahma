@@ -10,6 +10,7 @@ public class EchoReply {
     @JsonProperty("dependents")
     private List<EchoReply> dependentEchoReplyList;
     private String name;
+    private String url;
     private Integer depth;
     @JsonProperty("time")
     private String responseTime;
@@ -29,6 +30,14 @@ public class EchoReply {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Integer getDepth() {
