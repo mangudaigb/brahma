@@ -8,4 +8,4 @@ RUN native-image --no-server -cp build/libs/echo-*-all.jar
 FROM frolvlad/alpine-glibc
 EXPOSE 8080
 COPY --from=graalvm /home/app/echo/echo /app/echo
-ENTRYPOINT ["/app/echo", "-Djava.library.path=/app"]
+ENTRYPOINT ["/app/echo", "-Djava.library.path=/app", "-Dname=echo-server"]
