@@ -1,10 +1,12 @@
 package org.thl.echo.model.dao;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.micronaut.core.annotation.Introspected;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Introspected
 public class Dependent {
     private String url;
     private String message;

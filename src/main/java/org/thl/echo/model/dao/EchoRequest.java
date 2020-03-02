@@ -1,11 +1,13 @@
 package org.thl.echo.model.dao;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.micronaut.core.annotation.Introspected;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Introspected
 public class EchoRequest {
     private String message;
     @JsonProperty(value = "dependents")
